@@ -16,12 +16,20 @@
 #define W 8
 
 int directions_array[4] = {N, S, E, W};
+int directions[4] = {N, S, E, W};
 int DX (int direction) {
-  if (direction == E) {
-    return 1;
-  } else if (direction == W) {
-    return -1;
-  } else return 0;
+  int retval = 0;
+  switch (direction) {
+  case E:
+    retval = 1;
+    break;
+  case W:
+    retval = -1;
+    break;
+  default:
+    retval = 0;
+  }
+  return retval;
 }
 
 int DY (int direction) {
@@ -65,7 +73,6 @@ int ** carve_passages(int width, int height, int cx, int cy, int ** maze) {
     }
   }
   // Each int is a OR'd list of directions where there are NOT walls (ie, where there are passages)
-  int directions[4] = {N,S,E,W};
   shuffle_int(directions, 4);
   for (int i = 0; i < 4; i++) {
     int direction = directions[i];
@@ -117,7 +124,7 @@ char * genmaze (int width, int height, char wallchar, char floorchar) {
       for (int d = 0; d < 4; d++) { // 4 directions, loop through each
         int direction = 1 << d;
         if ((maze[y][x] & direction) == direction) {
-          ret[(y*width*2+1 + DY(direction))+(x*2+1) + DX(direction)] = floorchar; // Possibly destroy wall
+          ret[(y+ DY(direction) * width * 2 + 1)+(x*2+1) + DX(direction)] = floorchar; // Possibly destroy wall
         }
       } // Direction loop
     } // x loop

@@ -3,10 +3,12 @@
 int main (int argc, char * argv[]) {
   srand(time(NULL));
   int ch = 0;
-  int width = 36;
-  int height = 18;
+  int width = 37;
+  int height = 19;
+  char floorchar = '.';
+  char wallchar = '#';
   char * base_map = NULL;
-  base_map = genmaze(width, height, '#', '.');
+  base_map = genmaze(width, height, wallchar, floorchar);
   if (base_map == NULL) {
     fprintf(stderr, "Error creating maze\n");
     exit(EXIT_FAILURE);
@@ -15,8 +17,8 @@ int main (int argc, char * argv[]) {
   map = malloc(height * width+1);
   memset(map, 0, height * width + 1);
   memcpy(map, base_map, height * width);
-  int x = 3;
-  int y = 3;
+  int x = 0;
+  int y = 0;
   initscr();
   raw();
   curs_set(0);
@@ -25,25 +27,13 @@ int main (int argc, char * argv[]) {
   while (ch != 'q') {
     erase();
     if (ch == KEY_UP) {
-      if (y > 0) y--;
+      if (y > 0 && base_map[(y-1)*width+x] == floorchar) y--;
     } else if (ch == KEY_DOWN) {
-      if (y < height - 1) y++;
+      if (y < height - 1 && base_map[(y+1)*width+x] == floorchar) y++;
     } else if (ch == KEY_LEFT) {
-      if (x > 0) x--;
+      if (x > 0 && base_map[y*width+x-1] == floorchar) x--;
     } else if (ch == KEY_RIGHT) {
-      if (x < width - 1) x++;
-    } else if (ch == KEY_A1) {
-      if (x > 0) x--;
-      if (y > 0) y--;
-    } else if (ch == KEY_A3) {
-      if (x < width - 1) x++;
-      if (y > 0) y--;
-    } else if (ch == KEY_C1) {
-      if (x > 0) x--;
-      if (y < height - 1) y++;
-    } else if (ch == KEY_C3) {
-      if (x < width - 1) x++;
-      if (y < height - 1) y++;
+      if (x < width - 1 && base_map[y*width+x+1] == floorchar) x++;
     }
     memcpy(map, base_map, height * width);
     map[y*width + x] = '@';

@@ -87,7 +87,7 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-bin_PROGRAMS = maze$(EXEEXT)
+bin_PROGRAMS = maze$(EXEEXT) put$(EXEEXT)
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
@@ -108,6 +108,9 @@ maze_OBJECTS = $(am_maze_OBJECTS)
 maze_LDADD = $(LDADD)
 maze_LINK = $(CCLD) $(maze_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
 	-o $@
+am_put_OBJECTS = put.$(OBJEXT)
+put_OBJECTS = $(am_put_OBJECTS)
+put_LDADD = $(LDADD)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -140,8 +143,8 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(maze_SOURCES)
-DIST_SOURCES = $(maze_SOURCES)
+SOURCES = $(maze_SOURCES) $(put_SOURCES)
+DIST_SOURCES = $(maze_SOURCES) $(put_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -308,6 +311,8 @@ top_srcdir = @top_srcdir@
 AM_OPTIONS = gnu
 maze_SOURCES = maze.c
 maze_CFLAGS = -I$(srcdir)
+put_SOURCES = put.c
+put_CFlAGS = -I$(srcdir)
 include_HEADERS = maze.h shuffle.h
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
@@ -409,6 +414,10 @@ maze$(EXEEXT): $(maze_OBJECTS) $(maze_DEPENDENCIES) $(EXTRA_maze_DEPENDENCIES)
 	@rm -f maze$(EXEEXT)
 	$(AM_V_CCLD)$(maze_LINK) $(maze_OBJECTS) $(maze_LDADD) $(LIBS)
 
+put$(EXEEXT): $(put_OBJECTS) $(put_DEPENDENCIES) $(EXTRA_put_DEPENDENCIES) 
+	@rm -f put$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(put_OBJECTS) $(put_LDADD) $(LIBS)
+
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
 
@@ -416,6 +425,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/maze-maze.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/put.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

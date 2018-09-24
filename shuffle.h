@@ -14,6 +14,7 @@
 int* shuffle_int (int * array, size_t n_memb);
 
 int * shuffle_int (int * array, size_t n_memb) {
+  srand(time(NULL));
   if ( array == NULL) {
     return NULL;
   }

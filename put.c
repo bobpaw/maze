@@ -4,6 +4,7 @@
 #include "maze.h"
 
 int main (int argc, char * argv[]) {
+  srandom(time(NULL));
   int width = 16;
   int height = 16;
   if (argc > 2) {
@@ -41,5 +42,6 @@ int main (int argc, char * argv[]) {
     }
     printf("\n");
   }
+  printf("done\n");
   return 0;
 }

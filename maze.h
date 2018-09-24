@@ -57,7 +57,6 @@ int OPPOSITE (int direction) {
 
 // Recursive Backtracking Algorithm
 int ** carve_passages(int width, int height, int cx, int cy, int ** maze) {
-  srand(time(NULL));
   if (maze == NULL) {
     maze = calloc(height, sizeof(int*));
     if (maze == NULL) {

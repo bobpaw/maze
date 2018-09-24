@@ -1,0 +1,15 @@
+2018-03-19  Aiden Woodruff  <aiden.woodruff@gmail.com>
+
+	* runmazeanalytics.sh: New file
+	Used to run maze_analytics.pl quickly.
+
+	* maze_analytics.pl: Added executable mode
+
+	* put.c (main): Added section to print maze cell-based as well.
+	Commented out aforementioned section.
+
+	* maze.h (genmaze): Option added to specify previously made int ** maze.
+
+	* maze.c (main): Updated according to change in genmaze.
+
+	* README.md: Updated

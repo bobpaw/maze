@@ -8,7 +8,7 @@ int main (int argc, char * argv[]) {
   char floorchar = '.';
   char wallchar = '#';
   char * base_map = NULL;
-  base_map = genmaze(width, height, wallchar, floorchar);
+  base_map = genmaze(width, height, wallchar, floorchar, NULL);
   if (base_map == NULL) {
     fprintf(stderr, "Error creating maze\n");
     exit(EXIT_FAILURE);

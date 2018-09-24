@@ -89,7 +89,7 @@ int ** carve_passages(int width, int height, int cx, int cy, int ** maze) {
   return maze;
 }
 
-char * genmaze (int width, int height, char wallchar, char floorchar) {
+char * genmaze (int width, int height, char wallchar, char floorchar, int ** maze) {
   if (width < 2) {
     return NULL;
   }
@@ -102,9 +102,12 @@ char * genmaze (int width, int height, char wallchar, char floorchar) {
   if (!isprint(floorchar)) {
     floorchar = '.';
   }
+  int maze_given = 1;
   char * ret = NULL;
-  int ** maze = NULL;
-  maze = carve_passages((width-1)*2, (height-1)*2, 0, 0, maze);
+  if (maze == NULL) {
+    maze_given = 0;
+    maze = carve_passages((width-1)*2, (height-1)*2, 0, 0, maze);
+  }
   if (maze == NULL) {
     fprintf(stderr, "Error creating maze.\n");
     return NULL;
@@ -129,14 +132,11 @@ char * genmaze (int width, int height, char wallchar, char floorchar) {
     } // x loop
   } // y loop
   ret[(height*2*width+1)+(width*2+1)] = floorchar;
-  /* Actually Translate the maze
-     La
-     Di
-     Da
-  */
-  for (int i = 0; i < (height-1)*2; i++) {
-    free(maze[i]);
+  if (maze_given == 0) {
+    for (int i = 0; i < (height-1)*2; i++) {
+      free(maze[i]);
+    }
+    free(maze);
   }
-  free(maze);
   return ret;
 }

@@ -117,7 +117,7 @@ char * genmaze (int width, int height, char wallchar, char floorchar) {
       for (int d = 0; d < 4; d++) { // 4 directions, loop through each
         int direction = 1 << d;
         if ((maze[y][x] & direction) == direction) {
-          ret[(y*width*2+1)+(x*2+1)+DX(direction) + DY(direction)] = floorchar; // Possibly destroy wall
+          ret[(y*width*2+1 + DY(direction))+(x*2+1) + DX(direction)] = floorchar; // Possibly destroy wall
         }
       } // Direction loop
     } // x loop

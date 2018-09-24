@@ -60,12 +60,12 @@ int main (int argc, char * argv[]) {
     printf("\n");
   }
   printf("done\n");
-  /*
+  
     char * map = NULL;
-    map = genmaze((width-1)*2, (height-1)*2, '#', '.', maze);
+    map = genmaze((width)*2+1, (height)*2+1, '#', '.', maze);
     for (int i = 0; i < (height-1)*2; i++) {
     printf("%.*s\n", (width-1)*2, (map+i*(width-1)*2));
     }
-  */
+  
   return 0;
 }

@@ -123,29 +123,29 @@ char * genmaze (int width, int height, char wallchar, char floorchar, int ** maz
   char * ret = NULL;
   if (maze == NULL) {
     maze_given = 0;
-    maze = carve_passages((width-1)*2, (height-1)*2, 0, 0, maze);
+    maze = carve_passages(width, height, 0, 0, maze);
   }
   if (maze == NULL) {
     fprintf(stderr, "Error creating maze.\n");
     return NULL;
   }
-  ret = malloc(width*height+1);
+  ret = malloc(width*height*4+1);
   if (ret == NULL) {
     fprintf(stderr, "Error allocating char-array");
     return NULL;
   }
-  memset(ret, wallchar, width*height);
+  memset(ret, wallchar, width*height*4);
   ret[width*height] = 0;
   ret[width] = floorchar; // Entrance to maze is open
-  for (int y = 0; y < (height - 1) / 2; y++) {
-    for (int x = 0; x < (width - 1) / 2; x++) {
+  for (int y = 0; y < height; y++) {
+    for (int x = 0; x < width; x++) {
       ret[(y*width*2)+(x*2)] = floorchar;
-      for (int d = 0; d < 4; d++) { // 4 directions, loop through each
+      /*for (int d = 0; d < 4; d++) { // 4 directions, loop through each
         int direction = 1 << d;
         if ((maze[y][x] & direction) == direction) {
           ret[(y+ DY(direction) * width * 2 + 1)+(x*2+1) + DX(direction)] = floorchar; // Possibly destroy wall
         }
-      } // Direction loop
+      } // Direction loop*/
     } // x loop
   } // y loop
   ret[(height*2*width+1)+(width*2+1)] = floorchar;

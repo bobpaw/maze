@@ -22,8 +22,8 @@
 
 int main (int argc, char * argv[]) {
   srandom(clock());
-  int width = 16;
-  int height = 16;
+  int width = 3;
+  int height = 3;
   if (argc > 2) {
     width = atoi(argv[1]);
     height = atoi(argv[2]);
@@ -62,9 +62,9 @@ int main (int argc, char * argv[]) {
   printf("done\n");
   
     char * map = NULL;
-    map = genmaze((width)*2+1, (height)*2+1, '#', '.', maze);
-    for (int i = 0; i < (height-1)*2; i++) {
-    printf("%.*s\n", (width-1)*2, (map+i*(width-1)*2));
+    map = genmaze(width, height, '#', '.', maze);
+    for (int i = 0; i < height*2+1; i++) {
+    printf("%.*s\n", width*2+1, map+i*(width*2+1));
     }
   
   return 0;

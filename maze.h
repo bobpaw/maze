@@ -121,6 +121,7 @@ char * genmaze (int width, int height, char wallchar, char floorchar, int ** maz
   }
   int maze_given = 1;
   char * ret = NULL;
+  int retsize = (2*height+1)*(2*width+1)+1;
   if (maze == NULL) {
     maze_given = 0;
     maze = carve_passages(width, height, 0, 0, maze);
@@ -129,17 +130,17 @@ char * genmaze (int width, int height, char wallchar, char floorchar, int ** maz
     fprintf(stderr, "Error creating maze.\n");
     return NULL;
   }
-  ret = malloc(width*height*4+1);
+  ret = malloc(retsize);
   if (ret == NULL) {
     fprintf(stderr, "Error allocating char-array");
     return NULL;
   }
-  memset(ret, wallchar, width*height*4);
-  ret[width*height] = 0;
-  ret[width] = floorchar; // Entrance to maze is open
-  for (int y = 0; y < height; y++) {
-    for (int x = 0; x < width; x++) {
-      ret[(y*width*2)+(x*2)] = floorchar;
+  memset(ret, wallchar, retsize-1);
+  ret[retsize-1] = 0;
+  ret[2*width+1] = floorchar; // Entrance to maze is open
+  for (int y = 0; y < height*2+1; y++) {
+    for (int x = 0; x < width*2+1; x++) {
+      ret[2*width*(2*y+1)+2*(2*x+1)] = floorchar;
       /*for (int d = 0; d < 4; d++) { // 4 directions, loop through each
         int direction = 1 << d;
         if ((maze[y][x] & direction) == direction) {
@@ -148,9 +149,9 @@ char * genmaze (int width, int height, char wallchar, char floorchar, int ** maz
       } // Direction loop*/
     } // x loop
   } // y loop
-  ret[(height*2*width+1)+(width*2+1)] = floorchar;
+  ret[2*width*(2*height-1)+4*width] = floorchar;
   if (maze_given == 0) {
-    for (int i = 0; i < (height-1)*2; i++) {
+    for (int i = 0; i < height; i++) {
       free(maze[i]);
     }
     free(maze);

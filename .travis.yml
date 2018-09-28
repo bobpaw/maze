@@ -1,0 +1,41 @@
+# Project is written in C (defines some useful defaults)
+language: c
+
+# Save time by only getting the current repository status
+git:
+  depth: false
+
+# Test both clang and gcc
+compiler:
+  - clang
+  - gcc
+
+# Test both linux and osx
+os:
+  - linux
+  - osx
+
+# Install requirements with apt
+addons:
+  apt:
+    packages:
+    - ncurses-base
+    - libncurses-dev
+    - make
+    - autoconf
+    - automake
+    - m4
+    - perl
+
+## UPDATE: Release is important, but I need to check developement
+# Make sure to change to the distribution directory
+#before_script:
+#  - tar zxf "game-${VERSION}.tar.gz"
+#  - cd "game-${VERSION}"
+
+
+
+# Actually check if it works
+script:
+  - autoreconf -f -i && ./configure && make && make check
+  - echo -n "q" | ./maze > /dev/null

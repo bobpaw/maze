@@ -1,3 +1,43 @@
+2018-03-21  Aiden Woodruff  <aiden.woodruff@gmail.com>
+
+	* main.c: Moved from maze.c.
+
+	* main.c (main): Prints text when you win and sleeps.
+	Starts on a the real maze start (not 0,0).
+	Corrected output.
+	Prints different text for solving or quitting.
+
+	* put.c (main): Only prints cell based if -c option is supplied.
+	Correctly prints cell-based maze.
+
+	* main.h: Split from maze.h.
+
+	* maze.h: Split into maze.h and main.h.
+	maze.h has actual maze building functions.
+	main.h is the header file for main.c.
+
+	* maze.h (genmaze): Fixed translation.
+	Correctly add basic points.
+	Correctly destroy end hole.
+	Correctly destroy walls.
+	Now returns width and height of char array.
+
+	* Makefile.am: Fixed flags on put target.
+	Changed file name for maze target.
+	Added new header.
+
+	* configure.ac: Fixed CONFIG_SRCDIR.
+
+	* runmazeanalytics.sh: Added option to change height and width of maze.
+	Get run times better.
+
+2018-03-20  Aiden Woodruff  <aiden.woodruff@gmail.com>
+
+	* maze.h (genmaze): Returns bigger maze of size width*height*4
+	Doesn't open walls
+
+	* put.c (main): Uncommented region.
+
 2018-03-19  Aiden Woodruff  <aiden.woodruff@gmail.com>
 
 	* runmazeanalytics.sh: New file

@@ -17,13 +17,16 @@
 */
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "maze.h"
 
 int main (int argc, char * argv[]) {
   srandom(clock());
-  int width = 3;
-  int height = 3;
+  int width = 10;
+  int height = 10;
+  int retwidth = 0;
+  int retheight = 0;
   if (argc > 2) {
     width = atoi(argv[1]);
     height = atoi(argv[2]);
@@ -60,12 +63,12 @@ int main (int argc, char * argv[]) {
     printf("\n");
   }
   printf("done\n");
-  
+  if ((argc == 4 && strcmp(argv[3], "-c") == 0) || (argc == 2 && strcmp(argv[1], "-c") == 0)) {
     char * map = NULL;
-    map = genmaze(width, height, '#', '.', maze);
-    for (int i = 0; i < height*2+1; i++) {
-    printf("%.*s\n", width*2+1, map+i*(width*2+1));
+    map = genmaze(width, height, &retwidth, &retheight, '#', '.', maze);
+    for (int i = 0; i < retheight; i++) {
+    printf("%.*s\n", retwidth, map+i*retwidth);
     }
-  
+  }
   return 0;
 }

@@ -1,11 +1,23 @@
 #!/bin/sh
 
-if [ $1 ]; then
-  for i in $(seq -s' ' $1); do
-    ./put
-  done
-else
-  for i in 1 2 3 4 5; do
-    ./put
-  done
-fi | perl maze_analytics.pl
+runtimes=5
+width=10
+height=10
+
+for i in $*; do
+    case ${i} in
+        -w*)
+            width=$(echo "${i}" | sed 's/^-w\([0-9]\+\)$/\1/')
+            ;;
+        -h*)
+            height=$(echo "${i}" | sed 's/^-h\([0-9]\+\)$/\1/')
+            ;;
+        *)
+            runtimes=${i}
+            ;;
+    esac
+done
+
+for i in $(seq -s' ' ${runtimes}); do
+    ./put ${width} ${height}
+done | perl maze_analytics.pl

@@ -18,10 +18,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <ctype.h>
 #include <time.h>
-
-#include <ncurses.h>
+#include <ctype.h>
 
 #include "config.h"
 #include "shuffle.h"
@@ -106,7 +104,7 @@ int ** carve_passages(int width, int height, int cx, int cy, int ** maze) {
   return maze;
 }
 
-char * genmaze (int width, int height, char wallchar, char floorchar, int ** maze) {
+char * genmaze (int width, int height, int * retwidth, int * retheight, char wallchar, char floorchar, int ** maze) {
   if (width < 2) {
     return NULL;
   }
@@ -138,23 +136,25 @@ char * genmaze (int width, int height, char wallchar, char floorchar, int ** maz
   memset(ret, wallchar, retsize-1);
   ret[retsize-1] = 0;
   ret[2*width+1] = floorchar; // Entrance to maze is open
-  for (int y = 0; y < height*2+1; y++) {
-    for (int x = 0; x < width*2+1; x++) {
-      ret[2*width*(2*y+1)+2*(2*x+1)] = floorchar;
-      /*for (int d = 0; d < 4; d++) { // 4 directions, loop through each
+  for (int y = 0; y < height; y++) {
+    for (int x = 0; x < width; x++) {
+      ret[(2*width+1)*(2*y+1)+2*x+1] = floorchar;
+      for (int d = 0; d < 4; d++) { // 4 directions, loop through each
         int direction = 1 << d;
         if ((maze[y][x] & direction) == direction) {
-          ret[(y+ DY(direction) * width * 2 + 1)+(x*2+1) + DX(direction)] = floorchar; // Possibly destroy wall
+          ret[(2*width+1)*(2*y+1+DY(direction))+2*x+1 + DX(direction)] = floorchar; // Possibly destroy wall
         }
-      } // Direction loop*/
+      } // Direction loop
     } // x loop
   } // y loop
-  ret[2*width*(2*height-1)+4*width] = floorchar;
+  ret[(retsize - 2) - (2*width+1)] = floorchar;
   if (maze_given == 0) {
     for (int i = 0; i < height; i++) {
       free(maze[i]);
     }
     free(maze);
   }
+  *retwidth = 2*width+1;
+  *retheight = 2*height+1;
   return ret;
 }

@@ -13,6 +13,10 @@
 #define E 4
 #define W 8
 
+#ifndef has
+#define has(num, bit) (((num) & (bit)) == bit)
+#endif
+
 #ifndef MAZE_MAZE_H_
 #define MAZE_MAZE_H_
 

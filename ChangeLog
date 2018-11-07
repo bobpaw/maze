@@ -1,3 +1,40 @@
+2018-08-11  Aiden Woodruff  <aiden.woodruff@gmail.com>
+
+	* put.ggo: File added
+	Contains option to do the whole guessing thing
+	Contains options for setting width and height
+	Contains options to maximize dimensions
+	Contains options to select maze type
+
+	* cmdline-put.c, cmdline-put.h: Created with gengetopt
+
+	* maze.ggo: Add option to make maze with walls instead
+	Add option to maximize dimensinons
+	Add option to only output (TODO)
+
+	* cmdline-maze.c, cmdline-maze.h: Updated with gengetopt
+
+	* Makefile.am: Added cmdline-put.c to put sources
+
+	* put.c: Use gengetopt for height and width
+	Print maze types on per option basis
+	Print done after both types
+	Only guess if options is given
+	Only free far if it's used
+
+	* maze.h: Moved has macro definition to here
+
+	* main.c: Set y to zero by default
+	Call endwin on failure
+	Move ncurses to after cmdline_parser init
+	Check maze_width and maze_height are less than maximum
+	Set maze_width and maze_height to maximum by default
+	Set base_map to wall-based if option is specified
+	Don't use map, only basemap
+	use mvaddnstr to print map
+	Use mvaddch and mvchgat for sprite @ sign
+	Free maze if it was used
+
 2018-03-21  Aiden Woodruff  <aiden.woodruff@gmail.com>
 
 	* main.c: Moved from maze.c.

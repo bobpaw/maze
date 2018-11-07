@@ -18,10 +18,6 @@
 
 #include "maze.h"
 
-#ifndef has
-#define has(num, bit) (((num) & (bit)) == bit)
-#endif
-
 static int directions_array[4] = {N, S, E, W};
 static int directions[4] = {N, S, E, W};
 static int DX (int direction) {

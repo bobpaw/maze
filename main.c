@@ -31,61 +31,104 @@ int main (int argc, char * argv[]) {
   int winx = 0;
   int winy = 0;
   int x = 0;
-  int y = 1;
+  int y = 0;
   int loser = 1;
   if (cmdline_parser(argc, argv, &args_info) != 0) {
     fprintf(stderr, "Error processing command line arguments\n");
+    endwin();
     exit(EXIT_FAILURE);
   }
-  if (args_info.width_given) {
-    maze_width = args_info.width_arg;
-  } else {
-    maze_width = 32;
-  }
-  if (args_info.height_given) {
-    maze_height = args_info.height_arg;
-  } else {
-    maze_height = 16;
-  }
-  cmdline_parser_free(&args_info);
   initscr();
   raw();
   curs_set(0);
   keypad(stdscr, TRUE);
   noecho();
-  // Insure maze isn't too big
-  getmaxyx(stdscr, winy, winx);
-  for (;maze_height*2+1 > winy;maze_height--);
-  for (;maze_width*2+1 > winx;maze_width--);
-  base_map = genmaze(maze_width, maze_height, &width, &height, wallchar, floorchar, NULL);
+  if (args_info.width_given) {
+    maze_width = (args_info.width_arg < (COLS-1)>>1 ? args_info.width_arg : (COLS-1)>>1);
+  } else {
+    if (args_info.wall_given) {
+      maze_width = COLS;
+    } else {
+      maze_width = (COLS-1)>>1;
+    }
+  }
+  if (args_info.height_given) {
+    maze_height = (args_info.height_arg < (LINES-1)>>1 ? args_info.width_arg : (LINES-1)>>1);
+  } else {
+    if (args_info.wall_given) {
+      maze_height = LINES;
+    } else {
+      maze_height = (LINES-1)>>1;
+    }
+  }
+  if (args_info.maximize_given) {
+    maze_width = (COLS-1) >> 1;
+    maze_height = (LINES-1) >> 1;
+  }
+  int ** maze = NULL;
+  if (args_info.wall_given) {
+    y = 0;
+    maze = carve_passages(maze_width, maze_height, 0, 0, maze);
+    width = maze_width * 2 + 1;
+    height = maze_height + 1;
+    base_map = calloc(width * height + 1, sizeof(char));
+    int n = 0;
+    base_map[n] = ' ';
+    ++n;
+    for (int i = 0; i < (maze_width * 2 - 1); i++) {
+      base_map[n] = '_';
+      ++n;
+    }
+    base_map[n] = ' ';
+    ++n;
+    for (int y = 0; y < maze_height; y++) {
+      base_map[n] = '|';
+      ++n;
+      for (int x = 0; x < maze_width; x++) {
+        base_map[n] = ((maze[y][x] & S) != 0) ? ' ' : '_';
+        ++n;
+        if ((maze[y][x] & E) != 0) {
+          base_map[n] = (((maze[y][x] | maze[y][x+1]) & S) != 0) ? ' ' : '_';
+          ++n;
+        } else {
+          base_map[n] = '|';
+          ++n;
+        }
+      }
+    }
+  } else {
+    y = 1;
+    base_map = genmaze(maze_width, maze_height, &width, &height, wallchar, floorchar, NULL);
+  }
   if (base_map == NULL) {
     fprintf(stderr, "Error creating maze\n");
+    endwin();
     exit(EXIT_FAILURE);
   }
-  char * map = NULL;
-  map = malloc(height * width+1);
-  memset(map, 0, height * width + 1);
-  memcpy(map, base_map, height * width);
   while (ch != 'q') {
     erase();
     if (ch == KEY_UP) {
-      if (y > 0 && base_map[(y-1)*width+x] == floorchar) y--;
+      if (args_info.wall_given && has(maze[y][x], N) || y > 0 && base_map[(y-1)*width+x] == floorchar) --y;
     } else if (ch == KEY_DOWN) {
-      if (y < height - 1 && base_map[(y+1)*width+x] == floorchar) y++;
+      if (args_info.wall_given && has(maze[y][x], S) || y < height - 1 && base_map[(y+1)*width+x] == floorchar) y++;
     } else if (ch == KEY_LEFT) {
-      if (x > 0 && base_map[y*width+x-1] == floorchar) x--;
+      if (args_info.wall_given && has(maze[y][x], W) || x > 0 && base_map[y*width+x-1] == floorchar) x--;
     } else if (ch == KEY_RIGHT) {
-      if (x < width - 1 && base_map[y*width+x+1] == floorchar) x++;
+      if (args_info.wall_given && has(maze[y][x], E) || x < width - 1 && base_map[y*width+x+1] == floorchar) x++;
     }
-    memcpy(map, base_map, height * width);
-    map[y*width + x] = '@';
     for (int i = 0; i < height; ++i) {
-      printw("%.*s\n", width, (map + (i * width)));
+      mvaddnstr(i, 0, base_map + (i * width), width);
     }
-    printw("(x, y): (%d, %d)", x, y);
+    mvprintw(height + 1, 0, "(x, y): (%d, %d)", x, y);
+    if (args_info.wall_given) {
+    mvaddch(y+1, x*2+1, '@');
+    mvchgat(y+1, x*2+1, 1, has(maze[y][x], S) ? A_NORMAL : A_UNDERLINE, 0, NULL);
+    } else {
+    mvaddch(y, x, '@');
+    }
     refresh();
-    if (x == width-1 && y == height - 2) {
-      loser=0;
+    if (args_info.wall_given && x == maze_width - 1 && y == maze_height - 1 || x == width-1 && y == height - 2) {
+      loser = 0;
       break;
     }
     ch = getch();
@@ -99,8 +142,8 @@ int main (int argc, char * argv[]) {
   } else {
     int stringlength = strlen("#Loser :(#");
     mvprintw(winy/2-1, winx/2-stringlength/2, "##########\n");
-    mvprintw(winy/2, winx/2-stringlength/2,     "#Loser :(#\n");
-    mvprintw(winy/2+1, winx/2-stringlength/2,     "##########\n");
+    mvprintw(winy/2, winx/2-stringlength/2,   "#Loser :(#\n");
+    mvprintw(winy/2+1, winx/2-stringlength/2, "##########\n");
   }
   refresh();
   timeout(-1);
@@ -112,6 +155,12 @@ int main (int argc, char * argv[]) {
     printf("Loser: :(\n");
   }
   free(base_map);
-  free(map);
+  if (maze != NULL) {
+  for (int i = 0; i < maze_height; ++i) {
+    free(maze[i]);
+  }
+  free(maze);
+  }
+  cmdline_parser_free(&args_info);
   exit(EXIT_SUCCESS);
 }

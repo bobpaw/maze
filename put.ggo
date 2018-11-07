@@ -1,0 +1,10 @@
+args "--file-name=cmdline-put"
+option "guess" g "Interactive solution guessing" optional
+section "Maze Types"
+option "walls" w "Print a wall based maze" optional
+option "cells" c "Print a cell based maze" optional
+option "both" b "Print both a cell based and wall based maze" details="Print wall based first and then cell based." optional
+section "Dimensions"
+option "maximize" m "Maximie dimensions" optional
+option "width" W "Maze Width" int details="Width of wall based maze" optional
+option "height" H "Maze Height" int details="Height of wall based maze" optional

@@ -1,4 +1,9 @@
 args "--file-name=cmdline-maze"
+option "output" o "Only print maze" optional
+section "Maze type"
+option "cell" c "Use a cell based maze" optional
+option "wall" w "Use a wall based maze" optional
 section "Dimensions"
+option "maximize" m "Maximize dimensions" details="Sets size to fill whole screen" optional
 option "width" W "Maze Width" int details="If given width is larger than terminal, it is sized down to maximum value." optional dependon="height"
 option "height" H "Maze Height" int details="If given height is larger than terminal, it is sized down to maximum value." optional dependon="width"

@@ -1,9 +1,9 @@
 AM_OPTIONS = gnu
 bin_PROGRAMS = maze put
 maze_SOURCES = main.c cmdline-maze.c
-maze_CFLAGS = $(ncurses_flags) -I$(srcdir) $(cstd_flag)
+maze_CFLAGS = -I$(srcdir)
 put_SOURCES = put.c
-put_CFLAGS = -I$(srcdir) $(cstd_flag)
-include_HEADERS = maze.h shuffle.h main.h
+put_CFLAGS = -I$(srcdir)
+include_HEADERS = maze.h shuffle.h main.h cmdline-maze.h
 maintainer-clean-local:
 	rm -f *~ \#*#

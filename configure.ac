@@ -9,9 +9,10 @@ AC_CONFIG_HEADERS([config.h])
 
 # Checks for programs.
 AC_PROG_CC
+AC_PROG_CC_C99
 
 # Checks for libraries.
-AC_CHECK_LIB([ncurses], [initscr], [], [AC_MSG_ERROR([ncurses not found])])
+AC_CHECK_LIB([ncurses], [initscr], [], [AC_MSG_ERROR([ncurses not found]) ] )
 
 # Checks for header files.
 AC_CHECK_HEADERS([stdlib.h string.h])

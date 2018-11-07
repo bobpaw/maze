@@ -1,0 +1,4 @@
+args "--file-name=cmdline-maze"
+section "Dimensions"
+option "width" W "Maze Width" int details="If given width is larger than terminal, it is sized down to maximum value." optional dependon="height"
+option "height" H "Maze Height" int details="If given height is larger than terminal, it is sized down to maximum value." optional dependon="width"

@@ -20,12 +20,9 @@
 int main (int argc, char * argv[]) {
   srand(time(NULL) % clock());
   int ch = 0;
-  int fake_width = 37;
-  int fake_height = 19;
-  if (argc > 2) {
-    fake_width = atoi(argv[1]);
-    fake_height = atoi(argv[2]);
-  }
+  struct gengetopt_args_info args_info;
+  int maze_width = 0;
+  int maze_height = 0;
   int width = 0;
   int height = 0;
   char floorchar = '.';
@@ -36,6 +33,21 @@ int main (int argc, char * argv[]) {
   int x = 0;
   int y = 1;
   int loser = 1;
+  if (cmdline_parser(argc, argv, &args_info) != 0) {
+    fprintf(stderr, "Error processing command line arguments\n");
+    exit(EXIT_FAILURE);
+  }
+  if (args_info.width_given) {
+    maze_width = args_info.width_arg;
+  } else {
+    maze_width = 32;
+  }
+  if (args_info.height_given) {
+    maze_height = args_info.height_arg;
+  } else {
+    maze_height = 16;
+  }
+  cmdline_parser_free(&args_info);
   initscr();
   raw();
   curs_set(0);
@@ -43,9 +55,9 @@ int main (int argc, char * argv[]) {
   noecho();
   // Insure maze isn't too big
   getmaxyx(stdscr, winy, winx);
-  for (;fake_height*2+1 > winy;fake_height--);
-  for (;fake_width*2+1 > winx;fake_width--);
-  base_map = genmaze(fake_width, fake_height, &width, &height, wallchar, floorchar, NULL);
+  for (;maze_height*2+1 > winy;maze_height--);
+  for (;maze_width*2+1 > winx;maze_width--);
+  base_map = genmaze(maze_width, maze_height, &width, &height, wallchar, floorchar, NULL);
   if (base_map == NULL) {
     fprintf(stderr, "Error creating maze\n");
     exit(EXIT_FAILURE);

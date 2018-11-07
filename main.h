@@ -8,3 +8,4 @@
 
 #include "config.h"
 #include "maze.h"
+#include "cmdline-maze.h"

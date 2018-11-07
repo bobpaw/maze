@@ -15,7 +15,8 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include <stdlib.h>
+
+#include "shuffle.h"
 
 /**
  * shuffle_int:
@@ -30,7 +31,6 @@
  * Returns unmodified array if n_memb is 1
  **/
 
-int* shuffle_int (int * array, size_t n_memb);
 
 int * shuffle_int (int * array, size_t n_memb) {
   if ( array == NULL) {

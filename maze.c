@@ -15,20 +15,12 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <time.h>
-#include <ctype.h>
 
-#include "config.h"
-#include "shuffle.h"
+#include "maze.h"
 
-// Define constant directions
-#define N 1
-#define S 2
-#define E 4
-#define W 8
+#ifndef has
+#define has(num, bit) (((num) & (bit)) == bit)
+#endif
 
 static int directions_array[4] = {N, S, E, W};
 static int directions[4] = {N, S, E, W};
@@ -157,4 +149,37 @@ char * genmaze (int width, int height, int * retwidth, int * retheight, char wal
   *retwidth = 2*width+1;
   *retheight = 2*height+1;
   return ret;
+}
+
+int correct_distance (const int width, const int height, int ** maze, const char * travel_string) {
+  int travel_str_len = (int) strlen(travel_string);
+  int cx = 0, cy = 0;
+  int distance = 0;
+  int ch = 0;
+  int dir = 0;
+  for (int i = 0; i < travel_str_len; ++i) {
+    ch = toupper((int) travel_string[i]);
+    switch (ch) {
+    case (int) 'N':
+      dir = N;
+    break;
+    case (int) 'S':
+      dir = S;
+      break;
+    case (int) 'E':
+      dir = E;
+      break;
+    case (int) 'W':
+      dir = W;
+      break;
+    default:
+      continue;
+    }
+    if (has(maze[cy][cx], dir) && cy + DY(dir) > -1 && cy + DY(dir) < height - 1 && cx + DX(dir) > -1 && cx + DX(dir) < width - 1) {
+      cy += DY(dir);
+      cx += DX(dir);
+      ++distance;
+    }
+  }
+  return distance;
 }

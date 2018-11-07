@@ -31,6 +31,15 @@ int main (int argc, char * argv[]) {
     width = atoi(argv[1]);
     height = atoi(argv[2]);
   }
+  for (int i = 1; i < argc; i++) {
+    if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) {
+      printf("Usage: %s [WIDTH HEIGHT] [OPTIONS]\n", argv[0]);
+      printf("Options:\n");
+      printf("\t-h, --help\tPrint this help\n");
+      printf("\t-c        \tAlso print converted version\n");
+      exit(EXIT_SUCCESS);
+    }
+  }
   int ** maze = NULL;
   maze = calloc(height, sizeof(int*));
   if (maze == NULL) {
@@ -45,30 +54,45 @@ int main (int argc, char * argv[]) {
     }
   }
   carve_passages(width, height, 0, 0, maze);
-  printf(" ");
+  putchar(' ');
   for (int i = 0; i < (width * 2 - 1); i++) {
-    printf("_");
+    putchar('_');
   }
-  printf("\n");
+  putchar('\n');
   for (int y = 0; y < height; y++) {
-    printf("|");
+    putchar('|');
     for (int x = 0; x < width; x++) {
-      printf(((maze[y][x] & S) != 0) ? " " : "_");
+      putchar(((maze[y][x] & S) != 0) ? ' ' : '_');
       if ((maze[y][x] & E) != 0) {
-        printf((((maze[y][x] | maze[y][x+1]) & S) != 0) ? " " : "_");
+        putchar((((maze[y][x] | maze[y][x+1]) & S) != 0) ? ' ' : '_');
       } else {
-        printf("|");
+        putchar('|');
       }
     }
-    printf("\n");
+    putchar('\n');
   }
-  printf("done\n");
+  puts("done");
   if ((argc == 4 && strcmp(argv[3], "-c") == 0) || (argc == 2 && strcmp(argv[1], "-c") == 0)) {
     char * map = NULL;
     map = genmaze(width, height, &retwidth, &retheight, '#', '.', maze);
     for (int i = 0; i < retheight; i++) {
     printf("%.*s\n", retwidth, map+i*retwidth);
     }
+    free(map);
   }
-  return 0;
+  char * far = malloc(height * width);
+  memset(far, 0, height * width);
+  size_t far_s = height * width;
+  printf("Just q to exit.\n");
+  while (far[0] != 'q') {
+    printf("Proposed Solution: ");
+    getline(&far, &far_s, stdin);
+    printf("%d\n", correct_distance(width, height, maze, (const char *) far));
+  }
+  for (int i = 0; i < height; i++) {
+    free(maze[i]);
+  }
+  free(maze);
+  free(far);
+  exit(EXIT_SUCCESS);
 }

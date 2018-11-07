@@ -103,8 +103,8 @@ int main (int argc, char * argv[]) {
     mvprintw(winy/2+1, winx/2-stringlength/2,     "##########\n");
   }
   refresh();
-  starttime = time(NULL);
-  while (time(NULL) - starttime < 3);
+  timeout(-1);
+  getch();
   endwin();
   if (loser == 0) {
     printf("Congratulations. You win!\n");

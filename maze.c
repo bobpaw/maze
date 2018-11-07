@@ -30,9 +30,9 @@
 #define E 4
 #define W 8
 
-int directions_array[4] = {N, S, E, W};
-int directions[4] = {N, S, E, W};
-int DX (int direction) {
+static int directions_array[4] = {N, S, E, W};
+static int directions[4] = {N, S, E, W};
+static int DX (int direction) {
   int retval = 0;
   switch (direction) {
   case E:
@@ -47,7 +47,7 @@ int DX (int direction) {
   return retval;
 }
 
-int DY (int direction) {
+static int DY (int direction) {
   if (direction == N) {
     return -1;
   } else if (direction == S) {
@@ -55,7 +55,7 @@ int DY (int direction) {
   } else return 0;
 }
 
-int OPPOSITE (int direction) {
+static int OPPOSITE (int direction) {
   switch (direction) {
   case N:
     return S;

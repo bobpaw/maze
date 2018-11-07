@@ -1,6 +1,6 @@
 AM_OPTIONS = gnu
 bin_PROGRAMS = maze put
-maze_SOURCES = main.c cmdline-maze.c
+maze_SOURCES = main.c cmdline-maze.c maze.c
 maze_CFLAGS = -I$(srcdir)
 put_SOURCES = put.c
 put_CFLAGS = -I$(srcdir)

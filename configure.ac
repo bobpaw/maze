@@ -2,15 +2,16 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([maze], [0.1], [aiden.woodruff@gmail.com])
-AC_CONFIG_SRCDIR([main.c])
+AC_INIT([maze], [1.0], [aiden.woodruff@gmail.com])
+AC_CONFIG_AUX_DIR([.])
+AC_CONFIG_SRCDIR([maze.h])
 AC_CONFIG_HEADERS([config.h])
 
 # Checks for programs.
 AC_PROG_CC
 
 # Checks for libraries.
-AC_CHECK_LIB([ncurses], [initscr])
+AC_CHECK_LIB([ncurses], [initscr], [], [AC_MSG_ERROR([ncurses not found])])
 
 # Checks for header files.
 AC_CHECK_HEADERS([stdlib.h string.h])

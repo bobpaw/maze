@@ -27,7 +27,9 @@
  *
  * Returns pointer to modified array
  * Returns NULL if array is null, n_memb is less than 1, or if array ends before n_memb
+ * Returns unmodified array if n_memb is 1
  **/
+
 int* shuffle_int (int * array, size_t n_memb);
 
 int * shuffle_int (int * array, size_t n_memb) {
@@ -41,8 +43,6 @@ int * shuffle_int (int * array, size_t n_memb) {
       array[j] = array[i];
       array[i] = t;
     }
-  } else {
-    return NULL;
   }
   return array;
 }

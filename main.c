@@ -108,13 +108,13 @@ int main (int argc, char * argv[]) {
   while (ch != 'q') {
     erase();
     if (ch == KEY_UP) {
-      if (args_info.wall_given && has(maze[y][x], N) || y > 0 && base_map[(y-1)*width+x] == floorchar) --y;
+      if ((args_info.wall_given && has(maze[y][x], N)) || (y > 0 && base_map[(y-1)*width+x] == floorchar)) --y;
     } else if (ch == KEY_DOWN) {
-      if (args_info.wall_given && has(maze[y][x], S) || y < height - 1 && base_map[(y+1)*width+x] == floorchar) y++;
+      if ((args_info.wall_given && has(maze[y][x], S)) || (y < height - 1 && base_map[(y+1)*width+x] == floorchar)) y++;
     } else if (ch == KEY_LEFT) {
-      if (args_info.wall_given && has(maze[y][x], W) || x > 0 && base_map[y*width+x-1] == floorchar) x--;
+      if ((args_info.wall_given && has(maze[y][x], W)) || (x > 0 && base_map[y*width+x-1] == floorchar)) x--;
     } else if (ch == KEY_RIGHT) {
-      if (args_info.wall_given && has(maze[y][x], E) || x < width - 1 && base_map[y*width+x+1] == floorchar) x++;
+      if ((args_info.wall_given && has(maze[y][x], E)) || (x < width - 1 && base_map[y*width+x+1] == floorchar)) x++;
     }
     for (int i = 0; i < height; ++i) {
       mvaddnstr(i, 0, base_map + (i * width), width);
@@ -127,7 +127,7 @@ int main (int argc, char * argv[]) {
     mvaddch(y, x, '@');
     }
     refresh();
-    if (args_info.wall_given && x == maze_width - 1 && y == maze_height - 1 || x == width-1 && y == height - 2) {
+    if ((args_info.wall_given && x == maze_width - 1 && y == maze_height - 1) || (x == width-1 && y == height - 2)) {
       loser = 0;
       break;
     }

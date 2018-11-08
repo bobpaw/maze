@@ -93,7 +93,10 @@ int main (int argc, char * argv[]) {
     printf("Just q to exit.\n");
     while (far[0] != 'q') {
       printf("Proposed Solution: ");
-      getline(&far, &far_s, stdin);
+      if (getline(&far, &far_s, stdin) < 0) {
+        perror("getline");
+        exit(EXIT_FAILURE);
+      }
       printf("%d\n", correct_distance(width, height, maze, (const char *) far));
     }
     free(far);

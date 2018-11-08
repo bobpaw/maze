@@ -1,5 +1,5 @@
 AM_OPTIONS = gnu
-AM_CFLAGS = -Wall -pedantic
+AM_CFLAGS = -Wall -pedantic -Wextra
 bin_PROGRAMS = maze put
 maze_SOURCES = main.c cmdline-maze.c maze.c shuffle.c
 maze_CFLAGS = -I$(srcdir)

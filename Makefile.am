@@ -8,3 +8,4 @@ put_CFLAGS = -I$(srcdir)
 include_HEADERS = maze.h shuffle.h main.h cmdline-maze.h
 maintainer-clean-local:
 	rm -f *~ \#*#
+SUBDIRS = test

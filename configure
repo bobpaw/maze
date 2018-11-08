@@ -3825,7 +3825,7 @@ fi
 done
 
 
-ac_config_files="$ac_config_files test/Makefile Makefile test/sanity test/blank.sh"
+ac_config_files="$ac_config_files test/Makefile Makefile test/sanity test/blank.sh test/put.sh"
 
 am__api_version='1.15'
 
@@ -5324,6 +5324,7 @@ do
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
     "test/sanity") CONFIG_FILES="$CONFIG_FILES test/sanity" ;;
     "test/blank.sh") CONFIG_FILES="$CONFIG_FILES test/blank.sh" ;;
+    "test/put.sh") CONFIG_FILES="$CONFIG_FILES test/put.sh" ;;
     "depfiles") CONFIG_COMMANDS="$CONFIG_COMMANDS depfiles" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
@@ -6051,4 +6052,4 @@ if test -n "$ac_unrecognized_opts" && test "$enable_option_checking" != no; then
 $as_echo "$as_me: WARNING: unrecognized options: $ac_unrecognized_opts" >&2;}
 fi
 
-chmod +x test/sanity test/blank.sh
+chmod +x test/sanity test/blank.sh test/put.sh

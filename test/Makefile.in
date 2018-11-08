@@ -93,7 +93,7 @@ am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 DIST_COMMON = $(srcdir)/Makefile.am $(am__DIST_COMMON)
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
-CONFIG_CLEAN_FILES = sanity blank.sh
+CONFIG_CLEAN_FILES = sanity blank.sh put.sh
 CONFIG_CLEAN_VPATH_FILES =
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -320,7 +320,8 @@ TEST_LOG_DRIVER = $(SHELL) $(top_srcdir)/test-driver
 TEST_LOG_COMPILE = $(TEST_LOG_COMPILER) $(AM_TEST_LOG_FLAGS) \
 	$(TEST_LOG_FLAGS)
 am__DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/blank.sh.in \
-	$(srcdir)/sanity.in $(top_srcdir)/test-driver
+	$(srcdir)/put.sh.in $(srcdir)/sanity.in \
+	$(top_srcdir)/test-driver
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 AMTAR = @AMTAR@
@@ -410,9 +411,9 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-sh_TESTS = sanity blank.sh
+sh_TESTS = sanity blank.sh put.sh
 TESTS = $(sh_TESTS)
-EXTRA_DIST = $(sh_TESTS) run_tests.sh
+EXTRA_DIST = $(sh_TESTS)
 all: all-am
 
 .SUFFIXES:
@@ -449,6 +450,8 @@ $(am__aclocal_m4_deps):
 sanity: $(top_builddir)/config.status $(srcdir)/sanity.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 blank.sh: $(top_builddir)/config.status $(srcdir)/blank.sh.in
+	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
+put.sh: $(top_builddir)/config.status $(srcdir)/put.sh.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 tags TAGS:
 
@@ -608,6 +611,13 @@ sanity.log: sanity
 blank.sh.log: blank.sh
 	@p='blank.sh'; \
 	b='blank.sh'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
+put.sh.log: put.sh
+	@p='put.sh'; \
+	b='put.sh'; \
 	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \

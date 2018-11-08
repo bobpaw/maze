@@ -1,3 +1,3 @@
 #!/bin/sh
 
-echo 'q' | @top_srcdir@/maze # > /dev/null 2>&1
+echo 'q' | ../maze # > /dev/null 2>&1

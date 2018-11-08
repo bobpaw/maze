@@ -1,3 +1,3 @@
-sh_TESTS = sanity blank.sh
+sh_TESTS = sanity blank.sh put.sh
 TESTS = $(sh_TESTS)
-EXTRA_DIST = $(sh_TESTS) run_tests.sh
+EXTRA_DIST = $(sh_TESTS)

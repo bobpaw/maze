@@ -38,4 +38,3 @@ addons:
 # Actually check if it works
 script:
   - autoreconf -f -i && ./configure && make && make check
-  - echo -n "q" | ./maze > /dev/null
